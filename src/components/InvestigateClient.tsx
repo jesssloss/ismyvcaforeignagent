@@ -65,7 +65,7 @@ function InvestigateContent() {
   }
 
   return (
-    <main className="min-h-screen w-full overflow-x-hidden">
+    <div className="min-h-screen" style={{ width: '100%' }}>
       {/* Compact Header */}
       <header className="text-center pt-6 pb-4 px-4">
         <a href="/" className="inline-flex items-center gap-3 hover:opacity-80 transition-opacity">
@@ -77,8 +77,8 @@ function InvestigateContent() {
         </a>
       </header>
 
-      {/* Search — centered with proper constraints */}
-      <section className="w-full max-w-[680px] mx-auto px-4 sm:px-6">
+      {/* Search — centered */}
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 16px' }}>
         <form onSubmit={handleSubmit} className="flex bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden transition-all focus-within:border-[var(--accent-dim)] focus-within:shadow-[0_0_30px_rgba(0,255,65,0.1)]">
           <input
             ref={inputRef}
@@ -98,14 +98,14 @@ function InvestigateContent() {
             {loading ? "SCANNING..." : "INVESTIGATE"}
           </button>
         </form>
-      </section>
+      </div>
 
       {/* Loading */}
       {loading && <LoadingScreen />}
 
       {/* Error */}
       {error && (
-        <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6 py-10">
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 16px' }}>
           <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-8 sm:p-10 text-center animate-fade-in">
             <p className="text-[var(--red)]">❌ Error: {error}</p>
             <p className="text-[var(--text-dim)] text-sm mt-2">Please try again.</p>
@@ -115,7 +115,7 @@ function InvestigateContent() {
 
       {/* Results */}
       {result && (
-        <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6 py-8 sm:py-10 animate-fade-in">
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 16px' }} className="animate-fade-in">
           <VerdictCard result={result} />
 
           <div className="grid gap-4 mt-6 sm:mt-8">
@@ -136,7 +136,7 @@ function InvestigateContent() {
         <p>ismyvcaforeignagent.com · Searches public government databases. Nothing classified. Sadly.</p>
         <p className="mt-2">Built for laughs and light diligence. Not legal advice.</p>
       </footer>
-    </main>
+    </div>
   );
 }
 
