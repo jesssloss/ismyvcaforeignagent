@@ -101,40 +101,53 @@ export function calculateSpyScore(results: SourceResult[]): SpyScore {
     }
   }
 
-  // ── OFAC / Sanctions ──
+  // ── OFAC / Sanctions / OpenSanctions ──
   const ofac = results.find((r) => r.source === "ofac_sanctions") as OFACResult | undefined;
-  if (ofac?.hit) {
-    const topResult = ofac.results?.[0];
-    const matchScore = topResult?.score || 0;
+  if (ofac?.hit && ofac.results?.length > 0) {
+    const allDatasets = ofac.results.flatMap(r => r.datasets);
+    const allTopics = ofac.results.flatMap(r => r.topics);
 
-    if (matchScore > 0.8) {
-      score += 35;
-      signals.push({
-        text: `High-confidence match on sanctions/watchlist`,
-        severity: "critical",
-        icon: "🚫",
-      });
-    } else if (matchScore > 0.5) {
-      score += 15;
-      signals.push({
-        text: `Possible sanctions/watchlist match (${Math.round(matchScore * 100)}%)`,
-        severity: "high",
-        icon: "🚫",
-      });
-    } else {
-      score += 5;
-      signals.push({
-        text: `Low-confidence sanctions/watchlist hit`,
-        severity: "low",
-        icon: "🚫",
+    // Actual sanctions lists — maximum severity
+    if (allDatasets.some(d => d.includes("ofac") || d.includes("sdn") || d.includes("sanction"))) {
+      score += 40;
+      signals.push({ text: `On government sanctions list`, severity: "critical", icon: "🚫" });
+    }
+
+    // Enforcement actions
+    if (allDatasets.some(d => d.includes("enforcement"))) {
+      score += 20;
+      const enfDs = allDatasets.filter(d => d.includes("enforcement"));
+      signals.push({ 
+        text: `Government enforcement action (${enfDs.join(", ")})`, 
+        severity: "critical", 
+        icon: "⚖️" 
       });
     }
 
-    // Check for specific concerning datasets
-    const allDatasets = ofac.results.flatMap(r => r.datasets);
-    if (allDatasets.some(d => d.includes("ofac") || d.includes("sdn"))) {
+    // Oligarch designation
+    if (allDatasets.some(d => d.includes("oligarch")) || allTopics.some(t => t.includes("oligarch"))) {
+      score += 25;
+      signals.push({ text: `Designated as oligarch`, severity: "critical", icon: "💰" });
+    }
+
+    // Politically exposed person
+    if (allDatasets.some(d => d.includes("pep")) || allTopics.some(t => t.includes("pep") || t.includes("role.pep"))) {
       score += 10;
-      signals.push({ text: `Appears on US Treasury OFAC list`, severity: "critical", icon: "🇺🇸" });
+      signals.push({ text: `Politically exposed person (PEP)`, severity: "high", icon: "🏛️" });
+    }
+
+    // Interpol / FBI
+    if (allDatasets.some(d => d.includes("interpol") || d.includes("fbi") || d.includes("wanted"))) {
+      score += 35;
+      signals.push({ text: `International law enforcement watchlist`, severity: "critical", icon: "🔍" });
+    }
+
+    // Curated notable person (lower weight — just means they're notable)
+    if (!allDatasets.some(d => d.includes("sanction") || d.includes("enforcement") || d.includes("oligarch") || d.includes("pep") || d.includes("wanted"))) {
+      // Only wikidata/categories — don't add score, just note it
+      if (allDatasets.some(d => d === "wd_curated")) {
+        signals.push({ text: `Notable person in curated watchlist databases`, severity: "low", icon: "📋" });
+      }
     }
   }
 
