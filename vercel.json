@@ -1,0 +1,11 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
+  "functions": {
+    "src/app/api/investigate/route.ts": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  }
+}
