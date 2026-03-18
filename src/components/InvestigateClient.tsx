@@ -65,7 +65,7 @@ function InvestigateContent() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden">
+    <main className="min-h-screen w-full overflow-x-hidden">
       {/* Compact Header */}
       <header className="text-center pt-6 pb-4 px-4">
         <a href="/" className="inline-flex items-center gap-3 hover:opacity-80 transition-opacity">
