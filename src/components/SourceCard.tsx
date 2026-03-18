@@ -33,21 +33,21 @@ export function SourceCard({ source }: Props) {
   const statusText = source.error ? "ERROR" : source.hit ? "HIT" : "CLEAR";
 
   return (
-    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-6 transition-colors hover:border-[var(--border-glow)] animate-fade-in">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 sm:p-6 transition-colors hover:border-[var(--border-glow)] animate-fade-in overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <span className="font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-[2px] text-[var(--text-dim)]">
+      <div className="flex items-center justify-between gap-2 mb-3">
+        <span className="font-[family-name:var(--font-mono)] text-[10px] sm:text-xs font-bold uppercase tracking-[1px] sm:tracking-[2px] text-[var(--text-dim)] truncate">
           {SOURCE_NAMES[source.source] || source.source}
         </span>
         <span
-          className={`font-[family-name:var(--font-mono)] text-[11px] py-0.5 px-2 rounded font-bold border ${statusClass}`}
+          className={`font-[family-name:var(--font-mono)] text-[10px] sm:text-[11px] py-0.5 px-2 rounded font-bold border shrink-0 ${statusClass}`}
         >
           {statusText}
         </span>
       </div>
 
       {/* Source-specific detail */}
-      <div className="text-sm text-[var(--text-dim)] leading-relaxed">
+      <div className="text-xs sm:text-sm text-[var(--text-dim)] leading-relaxed overflow-hidden">
         {renderSourceDetail(source)}
       </div>
 
@@ -85,28 +85,28 @@ function EpsteinDetail({ source }: { source: EpsteinResult }) {
   return (
     <div>
       {source.persons.map((p, i) => (
-        <div key={i} className="bg-[rgba(255,255,255,0.02)] border border-[var(--border)] rounded-lg p-4 mt-3">
-          <div className="font-bold text-[15px] text-[var(--text)]">{p.name}</div>
-          <div className="font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-dim)]">
+        <div key={i} className="bg-[rgba(255,255,255,0.02)] border border-[var(--border)] rounded-lg p-3 sm:p-4 mt-3 overflow-hidden">
+          <div className="font-bold text-sm sm:text-[15px] text-[var(--text)]">{p.name}</div>
+          <div className="font-[family-name:var(--font-mono)] text-[10px] sm:text-[11px] text-[var(--text-dim)]">
             {p.occupation} · {p.category}
           </div>
           {p.description && (
-            <div className="text-[13px] text-[var(--text-dim)] mt-2 leading-normal">
+            <div className="text-xs sm:text-[13px] text-[var(--text-dim)] mt-2 leading-normal break-words">
               {p.description}
             </div>
           )}
-          <div className="flex gap-4 mt-2.5 flex-wrap">
-            <div className="font-[family-name:var(--font-mono)] text-[11px]">
+          <div className="flex gap-3 sm:gap-4 mt-2.5 flex-wrap">
+            <div className="font-[family-name:var(--font-mono)] text-[10px] sm:text-[11px]">
               <span className="text-[var(--accent)] font-bold">{p.documentCount}</span>{" "}
               <span className="text-[var(--text-muted)]">documents</span>
             </div>
-            <div className="font-[family-name:var(--font-mono)] text-[11px]">
+            <div className="font-[family-name:var(--font-mono)] text-[10px] sm:text-[11px]">
               <span className="text-[var(--accent)] font-bold">{p.connectionCount}</span>{" "}
               <span className="text-[var(--text-muted)]">connections</span>
             </div>
           </div>
           {p.connections && (
-            <div className="text-[11px] font-[family-name:var(--font-mono)] text-[var(--text-dim)] mt-2 leading-relaxed">
+            <div className="text-[10px] sm:text-[11px] font-[family-name:var(--font-mono)] text-[var(--text-dim)] mt-2 leading-relaxed break-words">
               {p.connections}
             </div>
           )}

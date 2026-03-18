@@ -21,33 +21,33 @@ export function VerdictCard({ result }: Props) {
 
   return (
     <div
-      className={`bg-[var(--bg-card)] border-t-[3px] border-x border-b border-x-[var(--border)] border-b-[var(--border)] ${borderClass} rounded-2xl p-10 text-center relative overflow-hidden ${glowClass} animate-fade-in`}
+      className={`bg-[var(--bg-card)] border-t-[3px] border-x border-b border-x-[var(--border)] border-b-[var(--border)] ${borderClass} rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden ${glowClass} animate-fade-in`}
     >
       {/* Subject line */}
-      <div className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-dim)] uppercase tracking-[3px] mb-4">
+      <div className="font-[family-name:var(--font-mono)] text-[10px] sm:text-xs text-[var(--text-dim)] uppercase tracking-[3px] mb-4">
         SUBJECT: {query}
       </div>
 
       {/* Emoji */}
-      <div className="text-[80px] mb-4">{spyScore.verdictEmoji}</div>
+      <div className="text-[56px] sm:text-[80px] mb-4 leading-none">{spyScore.verdictEmoji}</div>
 
       {/* Verdict text */}
       <div
-        className="font-[family-name:var(--font-mono)] font-bold text-[clamp(28px,5vw,42px)] tracking-[4px] mb-3"
+        className="font-[family-name:var(--font-mono)] font-bold text-[clamp(22px,5vw,42px)] tracking-[2px] sm:tracking-[4px] mb-3"
         style={{ color: spyScore.verdictColor }}
       >
         {spyScore.verdict}
       </div>
 
       {/* Score */}
-      <div className="inline-flex items-baseline gap-2 mb-6">
+      <div className="flex items-baseline justify-center gap-2 mb-6">
         <span
-          className="font-[family-name:var(--font-mono)] text-[64px] font-bold leading-none"
+          className="font-[family-name:var(--font-mono)] text-[48px] sm:text-[64px] font-bold leading-none"
           style={{ color: spyScore.verdictColor }}
         >
           {spyScore.score}
         </span>
-        <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--text-dim)] uppercase tracking-[2px]">
+        <span className="font-[family-name:var(--font-mono)] text-[10px] sm:text-xs text-[var(--text-dim)] uppercase tracking-[2px] text-left">
           / 100
           <br />
           spy score
@@ -55,7 +55,7 @@ export function VerdictCard({ result }: Props) {
       </div>
 
       {/* Meter */}
-      <div className="w-full max-w-[400px] h-2 bg-[var(--border)] rounded mx-auto mb-8 overflow-hidden">
+      <div className="w-full max-w-[400px] h-2 bg-[var(--border)] rounded mx-auto mb-6 sm:mb-8 overflow-hidden">
         <div
           className="h-full rounded transition-[width] duration-[1.5s] ease-out"
           style={{
@@ -80,7 +80,7 @@ export function VerdictCard({ result }: Props) {
             return (
               <div
                 key={i}
-                className={`font-[family-name:var(--font-mono)] text-xs py-2 px-3 rounded-md border-l-[3px] ${signalClass}`}
+                className={`font-[family-name:var(--font-mono)] text-[11px] sm:text-xs py-2 px-3 rounded-md border-l-[3px] ${signalClass}`}
               >
                 {signal.icon} {signal.text}
               </div>
@@ -94,7 +94,7 @@ export function VerdictCard({ result }: Props) {
       )}
 
       {/* Share buttons */}
-      <div className="mt-8 flex justify-center gap-3">
+      <div className="mt-6 sm:mt-8 flex justify-center gap-3">
         <button
           onClick={() => {
             const shareUrl = `${window.location.origin}/investigate?q=${encodeURIComponent(query)}`;
@@ -102,7 +102,7 @@ export function VerdictCard({ result }: Props) {
             const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
             window.open(tweetUrl, "_blank");
           }}
-          className="font-[family-name:var(--font-mono)] text-xs py-2 px-4 rounded-lg border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--accent)] hover:border-[var(--accent-dim)] transition-colors cursor-pointer bg-transparent"
+          className="font-[family-name:var(--font-mono)] text-[11px] sm:text-xs py-2 px-3 sm:px-4 rounded-lg border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--accent)] hover:border-[var(--accent-dim)] transition-colors cursor-pointer bg-transparent"
         >
           Share on 𝕏
         </button>
@@ -111,13 +111,12 @@ export function VerdictCard({ result }: Props) {
             const shareUrl = `${window.location.origin}/investigate?q=${encodeURIComponent(query)}`;
             const text = `🕵️ ${query}: ${spyScore.score}/100 Spy Score — ${spyScore.verdict}\n${spyScore.signals.map(s => `${s.icon} ${s.text}`).join("\n")}\n\n${shareUrl}`;
             navigator.clipboard.writeText(text);
-            // Brief visual feedback
             const btn = document.activeElement as HTMLButtonElement;
             const orig = btn.textContent;
             btn.textContent = "✓ Copied!";
             setTimeout(() => { btn.textContent = orig; }, 1500);
           }}
-          className="font-[family-name:var(--font-mono)] text-xs py-2 px-4 rounded-lg border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--accent)] hover:border-[var(--accent-dim)] transition-colors cursor-pointer bg-transparent"
+          className="font-[family-name:var(--font-mono)] text-[11px] sm:text-xs py-2 px-3 sm:px-4 rounded-lg border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--accent)] hover:border-[var(--accent-dim)] transition-colors cursor-pointer bg-transparent"
         >
           📋 Copy
         </button>

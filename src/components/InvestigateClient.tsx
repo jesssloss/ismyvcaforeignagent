@@ -26,7 +26,6 @@ function InvestigateContent() {
     setError(null);
     setQuery(name.trim());
 
-    // Update URL without reload
     const url = new URL(window.location.href);
     url.searchParams.set("q", name.trim());
     window.history.replaceState({}, "", url.toString());
@@ -52,12 +51,12 @@ function InvestigateContent() {
     }
   }
 
-  // Auto-search if URL has a name parameter
   useEffect(() => {
     if (nameParam && !hasAutoSearched.current) {
       hasAutoSearched.current = true;
       investigate(nameParam);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nameParam]);
 
   function handleSubmit(e: FormEvent) {
@@ -66,20 +65,20 @@ function InvestigateContent() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden">
       {/* Compact Header */}
-      <header className="text-center pt-8 pb-6 px-5">
-        <a href="/" className="inline-flex items-center gap-3 mb-4 hover:opacity-80 transition-opacity">
-          <span className="text-4xl">🕵️</span>
-          <h1 className="font-black text-2xl tracking-[-1px] bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+      <header className="text-center pt-6 pb-4 px-4">
+        <a href="/" className="inline-flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <span className="text-3xl sm:text-4xl">🕵️</span>
+          <h1 className="font-black text-xl sm:text-2xl tracking-[-1px] bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
             Is My VC a <span className="bg-gradient-to-br from-[var(--accent)] to-[#00cc33] bg-clip-text">Foreign Agent</span>?
           </h1>
-          <span className="text-4xl">🕵️‍♀️</span>
+          <span className="text-3xl sm:text-4xl">🕵️‍♀️</span>
         </a>
       </header>
 
-      {/* Search */}
-      <section className="max-w-[680px] mx-auto px-5">
+      {/* Search — centered with proper constraints */}
+      <section className="w-full max-w-[680px] mx-auto px-4 sm:px-6">
         <form onSubmit={handleSubmit} className="flex bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden transition-all focus-within:border-[var(--accent-dim)] focus-within:shadow-[0_0_30px_rgba(0,255,65,0.1)]">
           <input
             ref={inputRef}
@@ -89,12 +88,12 @@ function InvestigateContent() {
             placeholder="Enter VC name or firm..."
             autoComplete="off"
             spellCheck={false}
-            className="flex-1 bg-transparent border-none text-[var(--text)] font-[family-name:var(--font-mono)] text-base py-[18px] px-6 outline-none placeholder:text-[var(--text-muted)]"
+            className="flex-1 min-w-0 bg-transparent border-none text-[var(--text)] font-[family-name:var(--font-mono)] text-sm sm:text-base py-3 sm:py-[18px] px-4 sm:px-6 outline-none placeholder:text-[var(--text-muted)]"
           />
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="bg-[var(--accent)] text-black border-none font-[family-name:var(--font-mono)] font-bold text-sm py-[18px] px-7 cursor-pointer tracking-wider whitespace-nowrap hover:bg-[#33ff66] disabled:bg-[var(--text-muted)] disabled:cursor-not-allowed transition-colors"
+            className="bg-[var(--accent)] text-black border-none font-[family-name:var(--font-mono)] font-bold text-xs sm:text-sm py-3 sm:py-[18px] px-4 sm:px-7 cursor-pointer tracking-wider whitespace-nowrap hover:bg-[#33ff66] disabled:bg-[var(--text-muted)] disabled:cursor-not-allowed transition-colors shrink-0"
           >
             {loading ? "SCANNING..." : "INVESTIGATE"}
           </button>
@@ -106,8 +105,8 @@ function InvestigateContent() {
 
       {/* Error */}
       {error && (
-        <div className="max-w-[800px] mx-auto px-5 py-10">
-          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-10 text-center animate-fade-in">
+        <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6 py-10">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-8 sm:p-10 text-center animate-fade-in">
             <p className="text-[var(--red)]">❌ Error: {error}</p>
             <p className="text-[var(--text-dim)] text-sm mt-2">Please try again.</p>
           </div>
@@ -116,16 +115,16 @@ function InvestigateContent() {
 
       {/* Results */}
       {result && (
-        <div className="max-w-[800px] mx-auto px-5 py-10 animate-fade-in">
+        <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6 py-8 sm:py-10 animate-fade-in">
           <VerdictCard result={result} />
 
-          <div className="grid gap-4 mt-8">
+          <div className="grid gap-4 mt-6 sm:mt-8">
             {result.sources.map((source) => (
               <SourceCard key={source.source} source={source} />
             ))}
           </div>
 
-          <div className="mt-10 p-5 border border-dashed border-[var(--border)] rounded-lg font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-muted)] leading-relaxed">
+          <div className="mt-8 sm:mt-10 p-4 sm:p-5 border border-dashed border-[var(--border)] rounded-lg font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-muted)] leading-relaxed">
             <span className="text-[var(--yellow)]">⚠ DISCLAIMER: </span>
             {result.disclaimer}
           </div>
@@ -133,7 +132,7 @@ function InvestigateContent() {
       )}
 
       {/* Footer */}
-      <footer className="text-center py-16 px-5 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-muted)]">
+      <footer className="text-center py-12 sm:py-16 px-4 font-[family-name:var(--font-mono)] text-[11px] text-[var(--text-muted)]">
         <p>ismyvcaforeignagent.com · Searches public government databases. Nothing classified. Sadly.</p>
         <p className="mt-2">Built for laughs and light diligence. Not legal advice.</p>
       </footer>
